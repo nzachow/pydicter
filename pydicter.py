@@ -124,7 +124,7 @@ def get_files(url, base_url=''):
                 else:
                     if gg.has_key('series'):
                         print gg['type'] + ": " + gg['series']
-                print url+(n['href'])
+                print urllib2.quote(url)+(n['href'])
     for d in list_dir:
         get_files(d, url)
 
