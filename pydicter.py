@@ -12,6 +12,8 @@ args = parser.parse_args()
 imdb = Imdb()
 imdb = Imdb(anonymize=True)
 
+# The open movie data base url. I added it as a var instead of hardcoding it so the info displayed to the user can be changed in oneline
+omdburl = 'http://www.omdbapi.com/?t='
 
 def is_relevant_file(link):
     """
@@ -127,7 +129,12 @@ def get_files(url, base_url=''):
             x = check_media_info(gg)
             if x:
                 if gg.has_key('title'):
-                    print gg['type'] + ": " + gg['title']
+                    # I replaced spaces instead of just url encoding because url.encode(gg['title']) throws 
+                    #LookupError: unknown encoding: Jurassic World. I tried encoding it as utf-8 before urlencode
+                    # but no dice.
+                    title = gg['title']
+                    title = title.replace(' ','%20')
+                    print gg['type'] + ": " + gg['title'] +'\nMoive info: ' + omdburl + title
                 else:
                     if gg.has_key('series'):
                         print gg['type'] + ": " + gg['series']
