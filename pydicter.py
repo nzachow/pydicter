@@ -2,12 +2,18 @@ from imdbpie import Imdb
 import urllib2
 import linkGrabber
 import guessit
+import argparse
 
+parser = argparse.ArgumentParser(description='Scan open directories')
+parser.add_argument("-l", help="The url you want to scan")
+args = parser.parse_args()
 
 # This is what allow us to search IMDB
 imdb = Imdb()
 imdb = Imdb(anonymize=True)
 
+# The open movie data base url. I added it as a var instead of hardcoding it so the info displayed to the user can be changed in oneline
+omdburl = 'http://www.omdbapi.com/?t='
 
 def is_relevant_file(link):
     """
@@ -26,12 +32,15 @@ def is_relevant_file(link):
         return False
 
 
+
 def is_directory(link):
     """
         link is a string.
     """
     if link[-1] == '/':
         return True
+    elif args.l[-1] != '/':
+        print "Error: Link must end in /"
     else:
         return False
 
@@ -63,9 +72,9 @@ def check_movie_info(guess, imdb_check = True):
 
 def check_series_info(guess, imdb_check = True):
     """
-        There is no easy way to check series with IMDB api.
+        {There is no easy way to check series with IMDB api.  
         The main problem is the lack of a method for searching
-        information about a specific episode.
+        information about a specific episode.} The omdbapi can do this http://omdbapi.com/
         The best I can do now is check for a non-empty response.
     """
     if guess.has_key('series'):
@@ -120,7 +129,10 @@ def get_files(url, base_url=''):
             x = check_media_info(gg)
             if x:
                 if gg.has_key('title'):
-                    print gg['type'] + ": " + gg['title']
+                    # I replaced spaces instead of just url encoding because url.encode(gg['title']) throws 
+                    #LookupError: unknown encoding: Jurassic World. I tried encoding it as utf-8 before urlencode
+                    # but no dice.
+                    print gg['type'] + ": " + gg['title'] +'\nMoive info: ' + omdburl + gg['title'].replace(' ','%20')
                 else:
                     if gg.has_key('series'):
                         print gg['type'] + ": " + gg['series']
@@ -130,5 +142,5 @@ def get_files(url, base_url=''):
 
 
 if __name__ == '__main__':
-    get_files("http://www.ultraflux.org/MyStuff/")
+    get_files(args.l)
     # get_files("http://www.bdhdmovies.com/data/disk1/")
