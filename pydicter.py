@@ -27,7 +27,6 @@ def is_relevant_file(link):
     elif link['href'][-4:] == '.avi':
         return True
     else:
-        print "Error: No video files found"
         return False
 
 
@@ -38,8 +37,9 @@ def is_directory(link):
     """
     if link[-1] == '/':
         return True
+    elif args.l[-1] != '/':
+        print "Error: Link must end in /"
     else:
-        print "Error: Links must end in /"
         return False
 
 
