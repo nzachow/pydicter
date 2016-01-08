@@ -136,7 +136,7 @@ def print_info(guess, link):
     print_guess_info(guess, 'format', 'Format:      {}')
     print_guess_info(guess, 'screenSize', 'Screen size: {}')
     print_guess_info(guess, 'year', 'Year:        {}')
-    link = link.replace('%3A',':')
+    link = link.replace('http%3A','http:')
     print 'Link:        {}.'.format(link)
     print '#'*20
 
