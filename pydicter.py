@@ -4,7 +4,7 @@ import linkGrabber
 import guessit
 import argparse
 
-parser = argparse.ArgumentParser(description='Scan open dir')
+parser = argparse.ArgumentParser(description='Scan open directories')
 parser.add_argument("-l", help="The url you want to scan")
 args = parser.parse_args()
 
@@ -27,7 +27,9 @@ def is_relevant_file(link):
     elif link['href'][-4:] == '.avi':
         return True
     else:
+        print "Error: No video files found"
         return False
+
 
 
 def is_directory(link):
@@ -37,6 +39,7 @@ def is_directory(link):
     if link[-1] == '/':
         return True
     else:
+        print "Error: Links must end in /"
         return False
 
 
@@ -136,4 +139,3 @@ def get_files(url, base_url=''):
 if __name__ == '__main__':
     get_files(args.l)
     # get_files("http://www.bdhdmovies.com/data/disk1/")
-
