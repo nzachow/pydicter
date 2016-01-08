@@ -127,7 +127,7 @@ def print_info(guess, link):
     """
     if guess['type'] == u'movie':
         print_guess_info(guess, 'title', 'Movie name:  {}')
-        print 'Movie info: ' + omdblink + guess['title'] + '&plot=full' #This gives the full plot
+        print 'Movie info: ' + omdblink + guess['title'] + '&plot=full&v=1' #This gives the full plot and makes sure we use version 1 of the api
     elif guess['type'] == u'episode':
         print_guess_info(guess, 'series', 'Series name: {}')
     print_guess_info(guess, 'videoCodec', 'VCodec:      {}')
