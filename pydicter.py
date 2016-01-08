@@ -2,6 +2,7 @@ from imdbpie import Imdb
 import urllib2
 import linkGrabber
 import guessit
+import csv
 
 
 # This is what allow us to search IMDB
@@ -83,6 +84,7 @@ def check_series_info(guess, imdb_check = True):
         else:
             return False
 
+
 def check_media_info(guess, imdb_check = True):
     """
         Receives a Guess - guessit.Guess - object and search in IMDB
@@ -95,6 +97,34 @@ def check_media_info(guess, imdb_check = True):
     else:
         # GuessIt failed.
         return False
+
+
+def print_guess_info(guess, key, msg):
+    """
+        Using msg.format() you can easily display nice messages.
+        https://docs.python.org/2/library/string.html#formatstrings
+    """
+    if guess.has_key(key):
+        print msg.format(guess[key])
+
+
+def print_info(guess, link):
+    """
+        Just pass a Guess object and the link to this function.
+        link is a string.
+    """
+    if guess['type'] == u'movie':
+        print_guess_info(guess, 'title', 'Movie name:  {}')
+    elif guess['type'] == u'episode':
+        print_guess_info(guess, 'series', 'Series name: {}')
+    print_guess_info(guess, 'videoCodec', 'VCodec:      {}')
+    print_guess_info(guess, 'audioCodec', 'ACodec:      {}')
+    print_guess_info(guess, 'container', 'Container:   {}')
+    print_guess_info(guess, 'format', 'Format:      {}')
+    print_guess_info(guess, 'screenSize', 'Screen size: {}')
+    print_guess_info(guess, 'year', 'Year:        {}')
+    print 'Link:        {}.'.format(link)
+    print '#'*20
 
 
 def get_files(url, base_url=''):
@@ -119,12 +149,7 @@ def get_files(url, base_url=''):
             gg = guessit.guess_file_info(url+urllib2.unquote(n['href']))
             x = check_media_info(gg)
             if x:
-                if gg.has_key('title'):
-                    print gg['type'] + ": " + gg['title']
-                else:
-                    if gg.has_key('series'):
-                        print gg['type'] + ": " + gg['series']
-                print urllib2.quote(url)+(n['href'])
+                print_info(gg, urllib2.quote(url)+(n['href']))
     for d in list_dir:
         get_files(d, url)
 
