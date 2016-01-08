@@ -2,7 +2,11 @@ from imdbpie import Imdb
 import urllib2
 import linkGrabber
 import guessit
+import argparse
 
+parser = argparse.ArgumentParser(description='Scan open dir')
+parser.add_argument("-l", help="The url you want to scan")
+args = parser.parse_args()
 
 # This is what allow us to search IMDB
 imdb = Imdb()
@@ -63,9 +67,9 @@ def check_movie_info(guess, imdb_check = True):
 
 def check_series_info(guess, imdb_check = True):
     """
-        There is no easy way to check series with IMDB api.
+        {There is no easy way to check series with IMDB api.  
         The main problem is the lack of a method for searching
-        information about a specific episode.
+        information about a specific episode.} The omdbapi can do this http://omdbapi.com/
         The best I can do now is check for a non-empty response.
     """
     if guess.has_key('series'):
@@ -130,5 +134,6 @@ def get_files(url, base_url=''):
 
 
 if __name__ == '__main__':
-    get_files("http://www.ultraflux.org/MyStuff/")
+    get_files(args.l)
     # get_files("http://www.bdhdmovies.com/data/disk1/")
+
