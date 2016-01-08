@@ -17,6 +17,9 @@ args = parser.parse_args()
 imdb = Imdb()
 imdb = Imdb(anonymize=True)
 
+# This prints an error if the link doesn't end in /
+if args.l[-1] != '/':
+    print "Error: Directories must end in /"
 
 def is_relevant_file(link):
     """
