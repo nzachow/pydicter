@@ -8,6 +8,7 @@ import argparse
 # OMDB api link
 omdblink = 'http://www.omdbapi.com/?t='
 
+
 # Option parser
 parser = argparse.ArgumentParser(description='Scan open directories')
 parser.add_argument("-l", help="Open directory url")
@@ -126,7 +127,7 @@ def print_info(guess, link):
     """
     if guess['type'] == u'movie':
         print_guess_info(guess, 'title', 'Movie name:  {}')
-        print 'Movie info: ' + omdblink + guess['title']
+        print 'Movie info: ' + omdblink + guess['title'] + '&plot=full' #This gives the full plot
     elif guess['type'] == u'episode':
         print_guess_info(guess, 'series', 'Series name: {}')
     print_guess_info(guess, 'videoCodec', 'VCodec:      {}')
