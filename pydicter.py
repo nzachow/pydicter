@@ -3,7 +3,7 @@ import urllib2
 import linkGrabber
 import guessit
 import csv
-
+import argparse
 
 # This is what allow us to search IMDB
 imdb = Imdb()
@@ -115,6 +115,7 @@ def print_info(guess, link):
     """
     if guess['type'] == u'movie':
         print_guess_info(guess, 'title', 'Movie name:  {}')
+        print 'Movie info: ' + omdblink + guess['title']
     elif guess['type'] == u'episode':
         print_guess_info(guess, 'series', 'Series name: {}')
     print_guess_info(guess, 'videoCodec', 'VCodec:      {}')
