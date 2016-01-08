@@ -132,9 +132,7 @@ def get_files(url, base_url=''):
                     # I replaced spaces instead of just url encoding because url.encode(gg['title']) throws 
                     #LookupError: unknown encoding: Jurassic World. I tried encoding it as utf-8 before urlencode
                     # but no dice.
-                    title = gg['title']
-                    title = title.replace(' ','%20')
-                    print gg['type'] + ": " + gg['title'] +'\nMoive info: ' + omdburl + title
+                    print gg['type'] + ": " + gg['title'] +'\nMoive info: ' + omdburl + gg['title'].replace(' ','%20')
                 else:
                     if gg.has_key('series'):
                         print gg['type'] + ": " + gg['series']
