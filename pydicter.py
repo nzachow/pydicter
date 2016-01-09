@@ -8,6 +8,7 @@ import argparse
 # OMDB api link
 omdblink = 'http://www.omdbapi.com/?t='
 
+
 # Option parser
 parser = argparse.ArgumentParser(description='Scan open directories')
 parser.add_argument("-l", help="Open directory url")
@@ -17,6 +18,9 @@ args = parser.parse_args()
 imdb = Imdb()
 imdb = Imdb(anonymize=True)
 
+# This prints an error if the link doesn't end in /
+if args.l[-1] != '/':
+    print "Error: Directories must end in /"
 
 def is_relevant_file(link):
     """
@@ -123,7 +127,7 @@ def print_info(guess, link):
     """
     if guess['type'] == u'movie':
         print_guess_info(guess, 'title', 'Movie name:  {}')
-        print 'Movie info: ' + omdblink + guess['title']
+        print 'Movie info: ' + omdblink + guess['title'] + '&plot=full&v=1' #This gives the full plot and makes sure we use version 1 of the api
     elif guess['type'] == u'episode':
         print_guess_info(guess, 'series', 'Series name: {}')
     print_guess_info(guess, 'videoCodec', 'VCodec:      {}')
@@ -132,6 +136,7 @@ def print_info(guess, link):
     print_guess_info(guess, 'format', 'Format:      {}')
     print_guess_info(guess, 'screenSize', 'Screen size: {}')
     print_guess_info(guess, 'year', 'Year:        {}')
+    link = link.replace('http%3A','http:')
     print 'Link:        {}.'.format(link)
     print '#'*20
 
