@@ -1,0 +1,1 @@
+Fix key error in guess['title']. Right now there is just an except KeyError: for a work around.

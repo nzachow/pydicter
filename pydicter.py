@@ -79,7 +79,9 @@ def check_series_info(guess, imdb_check = True):
         There is no easy way to check series with IMDB api.
         The main problem is the lack of a method for searching
         information about a specific episode.
-        The best I can do now is check for a non-empty response.
+        The best I can do now is check for a non-empty response. 
+
+        ^You can search for specific episodes with omdbapi
     """
     if guess.has_key('series'):
         title = guess['series']
@@ -111,6 +113,7 @@ def check_media_info(guess, imdb_check = True):
         return False
 
 
+
 def print_guess_info(guess, key, msg):
     """
         Using msg.format() you can easily display nice messages.
@@ -127,9 +130,18 @@ def print_info(guess, link):
     """
     if guess['type'] == u'movie':
         print_guess_info(guess, 'title', 'Movie name:  {}')
-        print 'Movie info: ' + omdblink + guess['title'] + '&plot=full&v=1' #This gives the full plot and makes sure we use version 1 of the api
+        print 'Movie info:  ' + omdblink + guess['title'] + '&plot=full&v=1' #This gives the full plot and makes sure we use version 1 of the api
+        # there are 2 spaces after the : so it lines up with the other info printed
     elif guess['type'] == u'episode':
         print_guess_info(guess, 'series', 'Series name: {}')
+         
+        
+        # there are 2 spaces after the : so it lines up with the other info printed
+        try:
+            title = guess['title']
+            print 'Series info:  ' + omdblink + title.replace(' ','%20') + '&plot=full&v=1' #This gives the full plot and makes sure we use version 1 of the api
+        except KeyError:
+            print "There was an error"
     print_guess_info(guess, 'videoCodec', 'VCodec:      {}')
     print_guess_info(guess, 'audioCodec', 'ACodec:      {}')
     print_guess_info(guess, 'container', 'Container:   {}')
