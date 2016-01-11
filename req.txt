@@ -1,3 +1,3 @@
 guessit==1.0.2
 imdbpie==4.0.2
-linkGrabber==0.3.0
+BeautifulSoup==3.2.1

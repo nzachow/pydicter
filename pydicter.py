@@ -1,8 +1,7 @@
 from imdbpie import Imdb
+from BeautifulSoup import BeautifulSoup
 import urllib2
-import linkGrabber
 import guessit
-import csv
 import argparse
 
 
@@ -137,6 +136,24 @@ def print_info(guess, link):
     print '#'*20
 
 
+def get_links(html_str):
+    '''
+        This function receives a string with the html of a page and returns
+        all the links.
+        This is a good idea because it make easier to create tests.
+    '''
+    # Skip the first 5 links ( Name, Last Modified, Size,
+    #                          Description, Parent Directory )
+    # This is why the script only works with Apache
+    unwanted_links = ['name', 'last modified', 'size', 'description', 'parent directory']
+    result = []
+    soup = BeautifulSoup(html_str)
+    for link in soup('a'):
+        if link.contents[0].lower() not in unwanted_links:
+            result.append(link)
+    return result
+
+
 def get_files(url, base_url=''):
     """
         For now this works ONLY with apache directories listing.
@@ -145,11 +162,9 @@ def get_files(url, base_url=''):
     list_dir = []
     url = base_url+url
     if is_directory(url):
-        links = linkGrabber.Links(url)
-        # Skip the first 5 links ( Name, Last Modified, Size,
-        #                          Description, Parent Directory )
-        # This is why the script only works with Apache
-        list_links = links.find()[5:]
+        page = urllib2.urlopen(url)
+        page_html = page.read()
+        list_links = get_links(page_html)
         for l in list_links:
             if is_relevant_file(l):
                 list_files.append(l)
@@ -161,7 +176,8 @@ def get_files(url, base_url=''):
             if x:
                 print_info(gg, urllib2.quote(url)+(n['href']))
     for d in list_dir:
-        get_files(d, url)
+        # urllib2.quote() is the best way to handle url's
+        get_files(urllib2.quote(d), url)
 
 
 if __name__ == '__main__':
@@ -169,7 +185,8 @@ if __name__ == '__main__':
     description_str = "Script to scan an open directorie and based on \
                        filenames print possibles movies/series."
     parser = argparse.ArgumentParser(description=description_str)
-    parser.add_argument("location", help="Link to the open directory you want to scan")
+    parser.add_argument("location", help="Link to the open directory you want to scan", \
+                        type=str)
     args = parser.parse_args()
 
     # This prints an error if the link doesn't end in /
