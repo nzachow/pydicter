@@ -165,22 +165,22 @@ def get_files(url, base_url=''):
 
 
 if __name__ == '__main__':
+    # Option parser
+    description_str = "Script to scan an open directorie and based on \
+                       filenames print possibles movies/series."
+    parser = argparse.ArgumentParser(description=description_str)
+    parser.add_argument("location", help="Link to the open directory you want to scan")
+    args = parser.parse_args()
+
+    # This prints an error if the link doesn't end in /
+    if args.location[-1] != '/':
+        print "Error: Directories must end in /"
+
     # OMDB api link
     omdblink = 'http://www.omdbapi.com/?t='
-
-
-    # Option parser
-    parser = argparse.ArgumentParser(description='Scan open directories')
-    parser.add_argument("-l", help="Open directory url")
-    args = parser.parse_args()
 
     # This is what allow us to search IMDB
     imdb = Imdb()
     imdb = Imdb(anonymize=True)
 
-    # This prints an error if the link doesn't end in /
-    if args.l[-1] != '/':
-        print "Error: Directories must end in /"
-    get_files(args.l)
-    # get_files("http://www.bdhdmovies.com/da
-    #"http://www.ultraflux.org/MyStuff/"
+    get_files(args.location)
