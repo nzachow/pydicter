@@ -5,22 +5,6 @@ import guessit
 import csv
 import argparse
 
-# OMDB api link
-omdblink = 'http://www.omdbapi.com/?t='
-
-
-# Option parser
-parser = argparse.ArgumentParser(description='Scan open directories')
-parser.add_argument("-l", help="Open directory url")
-args = parser.parse_args()
-
-# This is what allow us to search IMDB
-imdb = Imdb()
-imdb = Imdb(anonymize=True)
-
-# This prints an error if the link doesn't end in /
-if args.l[-1] != '/':
-    print "Error: Directories must end in /"
 
 def is_relevant_file(link):
     """
@@ -181,6 +165,22 @@ def get_files(url, base_url=''):
 
 
 if __name__ == '__main__':
+    # OMDB api link
+    omdblink = 'http://www.omdbapi.com/?t='
+
+
+    # Option parser
+    parser = argparse.ArgumentParser(description='Scan open directories')
+    parser.add_argument("-l", help="Open directory url")
+    args = parser.parse_args()
+
+    # This is what allow us to search IMDB
+    imdb = Imdb()
+    imdb = Imdb(anonymize=True)
+
+    # This prints an error if the link doesn't end in /
+    if args.l[-1] != '/':
+        print "Error: Directories must end in /"
     get_files(args.l)
     # get_files("http://www.bdhdmovies.com/da
     #"http://www.ultraflux.org/MyStuff/"
